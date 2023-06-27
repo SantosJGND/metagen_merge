@@ -55,7 +55,7 @@ def app():
 
         merged_panel = merge_panels(illumina_found, telebac_found)
         merged_panel.to_csv(
-            output_dir + f"{session_id}_merged_panel.csv", sep="\t", index=False
+            output_dir + f"{session_id}_merged_panel.tsv", sep="\t", index=False
         )
         ## file to bytes
         merged_panel_bytes = open(
@@ -63,17 +63,17 @@ def app():
         ).read()
 
         put_markdown("### 3. download merged file")
-        put_file(f"{session_id}_merged_panel.csv", merged_panel_bytes)
+        put_file(f"{session_id}_merged_panel.tsv", merged_panel_bytes)
 
     except Exception as e:
         raise (e)
 
     finally:
         # remove files
-        os.remove("assets/" + f"{session_id}_televir.tsv")
-        os.remove("assets/" + f"{session_id}_rpip.xlsx")
-        os.remove("assets/" + f"{session_id}_upip.xlsx")
-        os.remove("assets/" + f"{session_id}_merged_panel.csv")
+        os.remove(output_dir + f"{session_id}_televir.tsv")
+        os.remove(output_dir + f"{session_id}_rpip.xlsx")
+        os.remove(output_dir + f"{session_id}_upip.xlsx")
+        os.remove(output_dir + f"{session_id}_merged_panel.tsv")
 
 
 if __name__ == "__main__":

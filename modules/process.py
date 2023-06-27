@@ -57,7 +57,15 @@ def get_illumina_found(rpip_panel, upip_panel):
         illumina_found_full["Microorganism Name"] != "None"
     ].drop_duplicates(subset=["Microorganism Name"])
     illumina_found = illumina_found[
-        ["Accession", "Microorganism Name", "Coverage", "ANI", "Median Depth", "RPKM"]
+        [
+            "Accession",
+            "Microorganism Name",
+            "Class Type",
+            "Coverage",
+            "ANI",
+            "Median Depth",
+            "RPKM",
+        ]
     ]
 
     illumina_found["Taxid"] = illumina_found["Microorganism Name"].apply(
@@ -90,11 +98,6 @@ def merge_panels(illumina_found, telebac_found):
             drop=True
         )
 
-        sample_taxids = (
-            pd.concat([illumina_sample["Taxid"], telebac_sample["Taxid"]], axis=0)
-            .drop_duplicates()
-            .reset_index(drop=True)
-        )
         new_set = pd.merge(
             illumina_sample, telebac_sample, on=["Sample", "Taxid"], how="outer"
         )
@@ -103,6 +106,41 @@ def merge_panels(illumina_found, telebac_found):
             subset=["Sample", "Description_x", "accID"]
         ).reset_index(drop=True)
 
+        def support_for_taxid(taxid: str):
+            in_illumina = taxid in illumina_sample["Taxid"].values
+            in_telebac = taxid in telebac_sample["Taxid"].values
+
+            if in_illumina and in_telebac:
+                return "Both"
+            elif in_illumina:
+                return "Panels"
+            elif in_telebac:
+                return "TELEVir"
+            else:
+                return None
+
+        new_set["Support"] = new_set["Taxid"].apply(support_for_taxid)
+        new_set = new_set[
+            [
+                "Sample",
+                "Support",
+                "Taxid",
+                "Description_x",
+                "accID",
+                "Cov (%)",
+                "Depth",
+                "DepthC",
+                "Mapped reads",
+                "Windows Covered",
+                "Warning",
+                "Control",
+                "Class Type",
+                "Coverage",
+                "ANI",
+                "Median Depth",
+                "RPKM",
+            ]
+        ]
         final_set = pd.concat([final_set, new_set], axis=0, ignore_index=True)
 
     return final_set
