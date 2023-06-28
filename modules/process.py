@@ -22,7 +22,7 @@ def process_televir(televir_reports):
         ]
     ].drop_duplicates()
     telebac_found["Windows Covered"] = telebac_found["Windows Covered"].apply(
-        lambda x: x.replace("/", "-")
+        lambda x: x.replace("/", ".")
     )
     telebac_found["Taxid"] = telebac_found["Taxid"].astype(str)
 
@@ -152,7 +152,7 @@ def merge_panels(illumina_found, telebac_found):
         )
         # sort by Mapped reads, then windows covered float
         new_set["windows_covered_float"] = new_set["Windows Covered"].apply(
-            lambda x: float(x.split("-")[0]) / float(x.split("-")[1])
+            lambda x: float(x.split("-")[0]) / float(x.split(".")[1])
         )
         new_set = new_set.sort_values(
             by=["Mapped reads", "windows_covered_float"], ascending=False
