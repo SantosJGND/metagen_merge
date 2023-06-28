@@ -125,7 +125,7 @@ def merge_panels(illumina_found, telebac_found):
                 "Sample",
                 "Support",
                 "Taxid",
-                "Description_x",
+                "Description_y",
                 "accID",
                 "Cov (%)",
                 "Depth",
@@ -134,6 +134,7 @@ def merge_panels(illumina_found, telebac_found):
                 "Windows Covered",
                 "Warning",
                 "Control",
+                "Description_x",
                 "Class Type",
                 "Coverage",
                 "ANI",
@@ -141,6 +142,27 @@ def merge_panels(illumina_found, telebac_found):
                 "RPKM",
             ]
         ]
+
+        new_set.rename(
+            columns={
+                "Description_x": "Description",
+                "Description_y": "TELEVir Description",
+            },
+            inplace=True,
+        )
+        # sort by Mapped reads, then windows covered float
+        new_set["windows_covered_float"] = new_set["Windows Covered"].apply(
+            lambda x: float(x.split("-")[0]) / float(x.split("-")[1])
+        )
+        new_set = new_set.sort_values(
+            by=["Mapped reads", "windows_covered_float"], ascending=False
+        ).reset_index(drop=True)
+        # drop windows covered float
+        new_set = new_set.drop(columns=["windows_covered_float"])
+
+        ## drop duplicate taxids, keep the one with the highest Mapped reads
+        new_set = new_set.drop_duplicates(subset=["Taxid"], keep="first")
+
         final_set = pd.concat([final_set, new_set], axis=0, ignore_index=True)
 
     return final_set

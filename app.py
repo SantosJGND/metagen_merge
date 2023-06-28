@@ -77,4 +77,4 @@ def app():
 
 
 if __name__ == "__main__":
-    start_server(app, port=32420, debug=True)
+    start_server(app, host="127.0.0.1", port=8000, debug=False)
