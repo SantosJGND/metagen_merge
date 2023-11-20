@@ -50,7 +50,9 @@ def app():
             output_dir + f"{session_id}_upip.xlsx", panel="Microorganisms (UPIP)"
         )
 
-        illumina_found = get_illumina_found(rpip_panel, upip_panel)
+        illumina_found = get_illumina_found(
+            [rpip_panel, upip_panel], tmp_dir=output_dir
+        )
         telebac_found = process_televir(televir_reports)
 
         merged_panel = merge_panels(illumina_found, telebac_found)
