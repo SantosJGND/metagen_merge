@@ -87,7 +87,6 @@ def remove_last_word(description: str) -> str:
 
 
 def taxid_passes_test(taxid_list: list) -> bool:
-
     if taxid_list[0] == "NA":
         return False
 
@@ -99,6 +98,9 @@ def specific_amends(description: str) -> str:
         return "Influenza A"
     if "Rinovírus" in description:
         return description.replace("Rinovírus", "Rhinovirus")
+
+    if "Human herpesvirus 6 (HHV-6)" in description:
+        return "Human herpesvirus 6"
 
     return description
 

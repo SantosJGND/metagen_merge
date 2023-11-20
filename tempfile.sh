@@ -1,1 +1,1 @@
-/usr/bin/esearch -db genome -query "Corynebacterium pseudogenitalium" | /usr/bin/efetch -format docsum | /usr/bin/xtract -pattern DocumentSummary -element TaxId > query_Corynebacterium_pseudogenitalium.txt
+/usr/bin/esearch -db genome -query "Rothia kristinae (Kocuria kristinae)" | /usr/bin/efetch -format docsum | /usr/bin/xtract -pattern DocumentSummary -element TaxId > query_Rothia_kristinae_Kocuria_kristinae.txt

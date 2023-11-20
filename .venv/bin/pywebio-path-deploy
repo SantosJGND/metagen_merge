@@ -1,4 +1,4 @@
-#!/home/bioinf/Desktop/CODE/APPS/metagen_merge/.venv/bin/python
+#!/home/bioinf/Desktop/CODE/INSA/APPS/metagen_merge/.venv/bin/python3
 import argparse
 from pywebio.platform import path_deploy, path_deploy_http
 

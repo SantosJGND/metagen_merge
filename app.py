@@ -64,6 +64,7 @@ def app():
 
         put_markdown("### 3. download merged file")
         put_file(f"{session_id}_merged_panel.tsv", merged_panel_bytes)
+        print("done")
 
     except Exception as e:
         raise (e)
@@ -77,4 +78,4 @@ def app():
 
 
 if __name__ == "__main__":
-    start_server(app, host="127.0.0.1", port=8000, debug=False)
+    start_server(app, host="127.0.0.1", port=8081, debug=False)
